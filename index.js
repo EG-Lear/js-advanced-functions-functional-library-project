@@ -17,7 +17,7 @@ const fi = (function() {
       return content
     },
 
-    map: function(content, action) {
+    map: function(content, action) { //iterates over an array or object and returns a new array
       const result = []
       if (Array.isArray(content) === true) {
         for (let i = 0; i < content.length; i++) {
@@ -45,16 +45,3 @@ const fi = (function() {
 
 fi.libraryMethod()
 
-function eachFor(content, test) { //iterates over an array or object and returns a new array
-  const result = []
-  if (Array.isArray(content) === true) {
-    for (let i = 0; i < content.length; i++) {
-      result.push(test(content[i]))
-    }
-  } else {
-    for (const key in content) {
-      result.push(test(content[key]))
-    }
-  }
-  return result
-}

@@ -82,6 +82,62 @@ const fi = (function() {
         let keys = Object.keys(data)
         return keys.length
       }
+    },
+
+    first: function(data, n) { //return the requested number of array elements starting from index 0, if no number is specified returns the first element
+      let requested = []
+      if (isNaN(n) === true) {
+        return data[0]
+      } else {
+        for (let i = 0; i < n; i++) {
+          requested.push(data[i])
+        }
+        return requested
+      }
+    },
+
+    last: function(data, n) { //returns the last element(s) of an array
+      let lastE = data.length - 1
+      let requested = []
+      if (isNaN(n) === true) {
+        return data[lastE]
+      } else {
+        let count = data.length - n
+        for (let i = count; i < data.length; i++) {
+          requested.push(data[i])
+        }
+        return requested
+      }
+    },
+
+    compact: function(data) { //iterates through an array and returns all truthy values
+      let truth = []
+      for (let i = 0; i < data.length; i++) {
+        if (data[i]) {
+          truth.push(data[i])
+        }  
+      }
+      return truth
+    },
+
+    sortBy: function(data) { //sorts an array alphabetically or numerically
+      let sorted = [data[0]]
+      let lastE = sorted.length - 1
+      if (isNaN(data[0]) === false){ 
+        for (let i = 1; i < data.length; i++) {
+          let x = 0
+          let check = undefined
+          while (check === undefined) {
+            if (data[i] <= sorted[x]){
+              sorted = [sorted.slice()]
+            } else if (x >= sorted.length) {
+
+            } else {
+              x++
+            }
+          }
+        }
+      }
     }
   }
 })()

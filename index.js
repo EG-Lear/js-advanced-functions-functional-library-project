@@ -120,23 +120,42 @@ const fi = (function() {
       return truth
     },
 
-    sortBy: function(data) { //sorts an array alphabetically or numerically
+    sortBy: function(data, action) { //sorts an array alphabetically or numerically
       let sorted = [data[0]]
-      let lastE = sorted.length - 1
       if (isNaN(data[0]) === false){ 
         for (let i = 1; i < data.length; i++) {
           let x = 0
           let check = undefined
           while (check === undefined) {
-            if (data[i] <= sorted[x]){
-              sorted = [sorted.slice()]
-            } else if (x >= sorted.length) {
-
+            if (x >= sorted.length) {
+              sorted.push(data[i])
+              check = true
+            } else if ((action(data[i])) < (action(sorted[x]))){
+              sorted = [...sorted.slice(0, x), data[i], ...sorted.slice(x)]
+              check = true 
             } else {
               x++
             }
           }
         }
+        return sorted
+      } else {
+        for (let i = 1; i < data.length; i++) {
+          let x = 0
+          let check = undefined
+          while (check === undefined) {
+            if (x >= sorted.length) {
+              sorted.push(data[i])
+              check = true
+            } else if ((data[i]).charAt(0) < (sorted[x]).charAt(0)){
+              sorted = [...sorted.slice(0, x), data[i], ...sorted.slice(x)]
+              check = true 
+            } else {
+              x++
+            }
+          }
+        }
+        return sorted
       }
     }
   }

@@ -42,8 +42,15 @@ const fi = (function() {
       return result
     },
 
-    functions: function() {
-
+    functions: function(data) { //returns the names of any functions contained in the object
+      let key = Object.keys(data)
+      let holding = []
+      for (let i = 0; i < key.length; i++){
+        if (typeof (data[key[i]]) === 'function') {
+          holding.push(key[i])
+        }
+      }
+      return fi.sortBy(holding)
     },
 
     find: function(data, action) { //iterates through an array to find a specific value, if value is not found returns undefined
@@ -120,9 +127,9 @@ const fi = (function() {
       return truth
     },
 
-    sortBy: function(data, action) { //sorts an array alphabetically or numerically
+    sortBy: function(data, action = (val) => { return val }) { //sorts an array alphabetically or numerically
       let sorted = [data[0]]
-      if (isNaN(data[0]) === false){ 
+      if (isNaN(data[0]) === false){ //numerical
         for (let i = 1; i < data.length; i++) {
           let x = 0
           let check = undefined
@@ -139,7 +146,7 @@ const fi = (function() {
           }
         }
         return sorted
-      } else {
+      } else { //alphabetical
         for (let i = 1; i < data.length; i++) {
           let x = 0
           let check = undefined
@@ -157,6 +164,74 @@ const fi = (function() {
         }
         return sorted
       }
+    },
+
+    flatten: function(data, value) { //flattens an array
+      let result = []
+      if (value === true) { //flattens one layer if true is provided as a second arg
+        for (let i = 0; i < data.length; i++){
+          if (data[i].length === undefined) {
+            result.push(data[i])
+          } else {
+            for (let x = 0; x < data[i].length; x++){
+              result.push(data[i][x])
+            }
+          }
+        }
+      } else {
+        multi(data)
+        function multi(array){ //flattens all layers
+          for (let i = 0; i < array.length; i++){
+            if (array[i].length === undefined) {
+              result.push(array[i])
+              //console.log(result)
+            } else {
+              multi(array[i])
+            }
+          }
+        }
+      }
+      return result
+    },
+
+    uniq: function(data, isSorted, modifier = (val) => {return val}) { //remove duplicates from an array
+      function findForMe(target) {
+        return (function(currEl) { return target === currEl })
+      }
+      let result = [data[0]]
+      if (isSorted === true) {
+        for (let i = 1; i < data.length; i++) {
+          if (data[i] === result[result.length - 1]) {
+            console.log('duplicate')
+          } else {
+            result.push(data[i])
+          }
+        }
+      } else {
+        const x = modifier(data[0])
+        let tested = [x]
+        for (let i = 1; i < data.length; i++) {
+          let testing = modifier(data[i])
+          if (fi.find(tested, findForMe(testing)) === undefined) {
+            result.push(data[i])
+            tested.push(testing)
+          }
+        }
+      }
+      return result
+    },
+
+    keys: function(data) { //return the keys of an object
+      return Object.keys(data)
+    }, 
+
+    values: function(data) { //return the values of an object
+      let key = Object.keys(data)
+      let value = []
+      for (let i = 0; i < key.length; i++) {
+        value.push(data[key[i]])
+      }
+      return value
     }
   }
 })()
